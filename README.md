@@ -24,6 +24,12 @@ The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI
 * [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
 * [Visual Studio](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/welcome.html)
 
+## Pre-requisites
+
+In order to run this Lambda you will need an RDS Microsoft SQL Server instance. For details on how to create such an instance see [here](https://aws.amazon.com/getting-started/hands-on/create-microsoft-sql-db). The database should be located in the same VPC as the Lambda; details [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.Scenarios.html). 
+
+An example BikeStores database schema and data is also required. You can create and load the BikeStores data to your database following instructions [here](https://www.sqlservertutorial.net/load-sample-database/).
+
 ## Deploy the sample application
 
 The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
@@ -37,9 +43,24 @@ To use the SAM CLI, you need the following tools.
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
+export NEW_RELIC_LICENSE_KEY=<your-newrelic-license-key>
+export MSSQL_DB_ENDPOINT=<your-rds-database-endpoint>
+export MSSQL_DATABASE=<your-rds-database>
+export MSSQL_USER=<your-rds-database-user>
+export MSSQL_PASSWORD=<your-rds-database-password>
+export LIST_OF_SECURITY_GROUP_IDS=<comma-separated-list-of-security-group-ids>
+export LIST_OF_SUBNET_IDS=<comma-separated-list-of-subnet-ids>
+make deploy
+```
+
+or, alternatively, use:
+
+```
 sam build
 sam deploy --guided
 ```
+
+Note that if you use the guided deploy, ensuring that you reply `No` to the question `Allow SAM CLI IAM role creation [Y/n]:` and for the subsequent field `Capabilities [['CAPABILITY_IAM']]:` enter `CAPABILITY_NAMED_IAM`.
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
 
