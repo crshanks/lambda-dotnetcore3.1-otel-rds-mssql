@@ -48,8 +48,8 @@ export MSSQL_DB_ENDPOINT=<your-rds-database-endpoint>
 export MSSQL_DATABASE=<your-rds-database>
 export MSSQL_USER=<your-rds-database-user>
 export MSSQL_PASSWORD=<your-rds-database-password>
-export LIST_OF_SECURITY_GROUP_IDS=<comma-separated-list-of-security-group-ids>
-export LIST_OF_SUBNET_IDS=<comma-separated-list-of-subnet-ids>
+export SECURITY_GROUP_ID=<security-group-id>
+export SUBNET_ID=<subnet-id>
 make deploy
 ```
 
