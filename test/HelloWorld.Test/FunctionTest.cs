@@ -14,27 +14,15 @@ namespace HelloWorld.Tests
   {
     private static readonly HttpClient client = new HttpClient();
 
-    private static async Task<string> GetCallingIP()
-    {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("User-Agent", "AWS Lambda .Net Client");
-
-            var stringTask = client.GetStringAsync("http://checkip.amazonaws.com/").ConfigureAwait(continueOnCapturedContext:false);
-
-            var msg = await stringTask;
-            return msg.Replace("\n","");
-    }
-
     [Fact]
     public async Task TestHelloWorldFunctionHandler()
     {
             var request = new APIGatewayProxyRequest();
             var context = new TestLambdaContext();
-            string location = GetCallingIP().Result;
             Dictionary<string, string> body = new Dictionary<string, string>
             {
                 { "message", "hello world" },
-                { "location", location },
+                { "brands", "Brands:  Electra, Haro, Heller, Pure Cycles, Ritchey, Strider, Sun Bicycles, Surly, Trek" },
             };
 
             var expectedResponse = new APIGatewayProxyResponse
@@ -45,7 +33,7 @@ namespace HelloWorld.Tests
             };
 
             var function = new Function();
-            var response = await function.FunctionHandler(request, context);
+            var response = function.FunctionHandler(request, context);
 
             Console.WriteLine("Lambda Response: \n" + response.Body);
             Console.WriteLine("Expected Response: \n" + expectedResponse.Body);
